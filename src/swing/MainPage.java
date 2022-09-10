@@ -6,22 +6,25 @@
 package swing;
 
 import java.awt.Color;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 /**
  *
  * @author Cham Kai Ling
  */
-public class Main extends javax.swing.JFrame {
+public class MainPage extends javax.swing.JFrame {
 
-    /**
-     * Creates new form Staff
-     */
-    public Main() {
+    private final Login loginWindow;
+
+    public MainPage(Login loginWin) {
         initComponents();
+        loginWindow = loginWin;
         StaffPage staffPage = new StaffPage();
         jDesktopPanel.add(staffPage).setVisible(true);
         title.setText("Staff Management");
+        usernameTxt.setText(loginWindow.userName());
+
     }
 
     /**
@@ -48,7 +51,7 @@ public class Main extends javax.swing.JFrame {
         jLabel4 = new javax.swing.JLabel();
         jSeparator1 = new javax.swing.JSeparator();
         jPanel2 = new javax.swing.JPanel();
-        jLabel5 = new javax.swing.JLabel();
+        usernameTxt = new javax.swing.JLabel();
         title = new javax.swing.JLabel();
         jDesktopPanel = new javax.swing.JDesktopPane();
 
@@ -205,8 +208,14 @@ public class Main extends javax.swing.JFrame {
         jLabel4.setBackground(new java.awt.Color(255, 255, 255));
         jLabel4.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jLabel4.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/logout.png"))); // NOI18N
         jLabel4.setText("LOGOUT");
-        side_pane.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 510, 60, -1));
+        jLabel4.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jLabel4MouseClicked(evt);
+            }
+        });
+        side_pane.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 510, 90, -1));
 
         jSeparator1.setForeground(new java.awt.Color(255, 255, 255));
         side_pane.add(jSeparator1, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 130, 100, 10));
@@ -215,10 +224,10 @@ public class Main extends javax.swing.JFrame {
 
         jPanel2.setBackground(new java.awt.Color(106, 27, 154));
 
-        jLabel5.setFont(new java.awt.Font("Segoe UI", 0, 12)); // NOI18N
-        jLabel5.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel5.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel5.setText("Username");
+        usernameTxt.setFont(new java.awt.Font("Segoe UI", 0, 12)); // NOI18N
+        usernameTxt.setForeground(new java.awt.Color(255, 255, 255));
+        usernameTxt.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        usernameTxt.setText("Username");
 
         title.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         title.setForeground(new java.awt.Color(255, 255, 255));
@@ -231,9 +240,9 @@ public class Main extends javax.swing.JFrame {
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addGap(30, 30, 30)
                 .addComponent(title)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 543, Short.MAX_VALUE)
-                .addComponent(jLabel5)
-                .addGap(63, 63, 63))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 565, Short.MAX_VALUE)
+                .addComponent(usernameTxt)
+                .addGap(41, 41, 41))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -241,7 +250,7 @@ public class Main extends javax.swing.JFrame {
                 .addGap(10, 10, 10)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(title)
-                    .addComponent(jLabel5))
+                    .addComponent(usernameTxt))
                 .addGap(15, 15, 15))
         );
 
@@ -266,33 +275,33 @@ public class Main extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void staffMng_btnMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_staffMng_btnMousePressed
-        staffMng_btn.setBackground(new Color(85,0,163));
-        productMng_btn.setBackground(new Color(56,0,107));
-        report_btn.setBackground(new Color(56,0,107));
-        
+        staffMng_btn.setBackground(new Color(85, 0, 163));
+        productMng_btn.setBackground(new Color(56, 0, 107));
+        report_btn.setBackground(new Color(56, 0, 107));
+
         ind_s.setOpaque(true);
         ind_p.setOpaque(false);
         ind_r.setOpaque(false);
-        
-        
+
+
     }//GEN-LAST:event_staffMng_btnMousePressed
 
     private void productMng_btnMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_productMng_btnMousePressed
-        productMng_btn.setBackground(new Color(85,0,163));
-        staffMng_btn.setBackground(new Color(56,0,107));
-        report_btn.setBackground(new Color(56,0,107));
-        
+        productMng_btn.setBackground(new Color(85, 0, 163));
+        staffMng_btn.setBackground(new Color(56, 0, 107));
+        report_btn.setBackground(new Color(56, 0, 107));
+
         ind_p.setOpaque(true);
         ind_r.setOpaque(false);
         ind_s.setOpaque(false);
         title.setText("Product Management");
-       
+
     }//GEN-LAST:event_productMng_btnMousePressed
 
     private void report_btnMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_report_btnMousePressed
-        report_btn.setBackground(new Color(85,0,163));
-        staffMng_btn.setBackground(new Color(56,0,107));
-        productMng_btn.setBackground(new Color(56,0,107));
+        report_btn.setBackground(new Color(85, 0, 163));
+        staffMng_btn.setBackground(new Color(56, 0, 107));
+        productMng_btn.setBackground(new Color(56, 0, 107));
         ind_r.setOpaque(true);
         ind_p.setOpaque(false);
         ind_s.setOpaque(false);
@@ -317,6 +326,16 @@ public class Main extends javax.swing.JFrame {
         jDesktopPanel.add(reportPage).setVisible(true);
     }//GEN-LAST:event_report_btnMouseClicked
 
+    private void jLabel4MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel4MouseClicked
+        int option = JOptionPane.showConfirmDialog(null, "Do you want to logout ?", "Logout",
+                JOptionPane.OK_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE);
+        if (option == JOptionPane.YES_OPTION) {
+            this.dispose();
+            Login loginForm = new Login();
+            loginForm.setVisible(true);
+        }
+    }//GEN-LAST:event_jLabel4MouseClicked
+
     /**
      * @param args the command line arguments
      */
@@ -334,26 +353,28 @@ public class Main extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(Main.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(MainPage.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(Main.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(MainPage.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(Main.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(MainPage.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(Main.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(MainPage.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
+        //</editor-fold>
         //</editor-fold>
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new Main().setVisible(true);
+                Login loginWindow = new Login();
+                new MainPage(loginWindow).setVisible(true);
             }
         });
     }
-    
- 
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel ind_p;
@@ -364,7 +385,6 @@ public class Main extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
-    private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JPanel jPanel2;
@@ -374,5 +394,6 @@ public class Main extends javax.swing.JFrame {
     private javax.swing.JPanel side_pane;
     private javax.swing.JPanel staffMng_btn;
     private javax.swing.JLabel title;
+    private javax.swing.JLabel usernameTxt;
     // End of variables declaration//GEN-END:variables
 }

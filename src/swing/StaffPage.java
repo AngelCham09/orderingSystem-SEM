@@ -13,6 +13,7 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.Vector;
+import javax.swing.BorderFactory;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.plaf.basic.BasicInternalFrameUI;
@@ -44,6 +45,9 @@ public class StaffPage extends javax.swing.JInternalFrame {
         DefaultTableCellRenderer leftRenderer = new DefaultTableCellRenderer();
         leftRenderer.setHorizontalAlignment(JLabel.LEFT);
         staffTable.setDefaultRenderer(Integer.class, leftRenderer);
+        searchTxt.setBorder(BorderFactory.createCompoundBorder(
+        searchTxt.getBorder(), 
+        BorderFactory.createEmptyBorder(5, 5, 3, 5)));
         upDateDB();
 
     }
@@ -101,7 +105,7 @@ public class StaffPage extends javax.swing.JInternalFrame {
 
         setBackground(new java.awt.Color(204, 204, 255));
 
-        searchTxt.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        searchTxt.setFont(new java.awt.Font("Segoe UI", 0, 13)); // NOI18N
         searchTxt.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
 
         staffTable.setFont(new java.awt.Font("Segoe UI", 0, 13)); // NOI18N
@@ -179,6 +183,7 @@ public class StaffPage extends javax.swing.JInternalFrame {
 
         chooseItem.setFont(new java.awt.Font("Segoe UI", 0, 13)); // NOI18N
         chooseItem.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Staff ID", "Staff Name", "Staff Age", "Staff Gender", "Staff Position" }));
+        chooseItem.setBorder(null);
 
         jLabel1.setFont(new java.awt.Font("Segoe UI", 0, 13)); // NOI18N
         jLabel1.setText("Search By :");
@@ -236,7 +241,7 @@ public class StaffPage extends javax.swing.JInternalFrame {
                     .addComponent(addStaffBtn)
                     .addComponent(editStaffBtn)
                     .addComponent(dltButton))
-                .addContainerGap(15, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();
@@ -288,23 +293,66 @@ public class StaffPage extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_editStaffBtnActionPerformed
 
     private void searchBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchBtnActionPerformed
-        String search = searchTxt.getText();
+
         String choose = chooseItem.getSelectedItem().toString();
 
-        switch (choose) {
-            case "Staff ID":
-                break;
-            case "Staff Name":
-                break;
-            case "Staff Age":
-                break;
-            case "Staff Gender":
-                break;
-            case "Staff Position":
-                break;
-            default:
-                break;
+        try {
+            Class.forName("com.mysql.jdbc.Driver");
+            sqlConn = DriverManager.getConnection(dataConn, username, password);
+
+            switch (choose) {
+                case "Staff ID":
+                    pst = sqlConn.prepareStatement("Select * from staff where id=?");
+                    pst.setInt(1, Integer.valueOf(searchTxt.getText().substring(1)));
+                    break;
+                case "Staff Name":
+                    pst = sqlConn.prepareStatement("Select * from staff where name=?");
+                    pst.setString(1, searchTxt.getText());
+                    break;
+                case "Staff Age":
+                    pst = sqlConn.prepareStatement("Select * from staff where age=?");
+                    pst.setInt(1, Integer.valueOf(searchTxt.getText()));
+                    break;
+                case "Staff Gender":
+                    pst = sqlConn.prepareStatement("Select * from staff where gender=?");
+                    pst.setString(1, searchTxt.getText());
+                    break;
+                case "Staff Position":
+                    pst = sqlConn.prepareStatement("Select * from staff where position=?");
+                    pst.setString(1, searchTxt.getText());
+                    break;
+                default:
+                    break;
+            }
+
+            rs = pst.executeQuery();
+            ResultSetMetaData stData = (ResultSetMetaData) rs.getMetaData();
+
+            q = stData.getColumnCount();
+
+            DefaultTableModel RecordTable = (DefaultTableModel) staffTable.getModel();
+            RecordTable.setRowCount(0);
+
+            while (rs.next()) {
+                Vector columnData = new Vector();
+
+                for (i = 1; i <= q; i++) {
+                    columnData.add("S" + rs.getString("id"));
+                    columnData.add(rs.getString("name"));
+                    columnData.add(rs.getString("age"));
+                    columnData.add(rs.getString("gender"));
+                    columnData.add(rs.getString("position"));
+                }
+                RecordTable.addRow(columnData);
+            }
+
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "Record not found", "ERROR", JOptionPane.ERROR_MESSAGE);
+            searchTxt.setText("");
+            upDateDB();
         }
+
+
     }//GEN-LAST:event_searchBtnActionPerformed
 
     public String[] selectedStaff() {

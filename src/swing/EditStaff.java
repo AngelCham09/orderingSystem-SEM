@@ -34,6 +34,9 @@ public class EditStaff extends javax.swing.JFrame {
         ageTxt.setText(staff[2]);
         genderTxt.setSelectedItem(staff[3]);
         positionTxt.setSelectedItem(staff[4]);
+        
+        newPwdTxt.setEchoChar((char) 8226);
+        confirmPwdTxt.setEchoChar((char) 8226);
     }
 
     /**
@@ -59,13 +62,13 @@ public class EditStaff extends javax.swing.JFrame {
         nameTxt = new javax.swing.JTextField();
         genderTxt = new javax.swing.JComboBox<>();
         positionTxt = new javax.swing.JComboBox<>();
-        newPwdTxt = new javax.swing.JTextField();
-        confirmPwdTxt = new javax.swing.JTextField();
         ageTxt = new javax.swing.JTextField();
         jPanel1 = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
         jLabel9 = new javax.swing.JLabel();
         idTxt = new javax.swing.JLabel();
+        newPwdTxt = new javax.swing.JPasswordField();
+        confirmPwdTxt = new javax.swing.JPasswordField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -141,10 +144,6 @@ public class EditStaff extends javax.swing.JFrame {
         positionTxt.setFont(new java.awt.Font("Segoe UI", 0, 13)); // NOI18N
         positionTxt.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Manager", "Staff" }));
 
-        newPwdTxt.setFont(new java.awt.Font("Segoe UI", 0, 13)); // NOI18N
-
-        confirmPwdTxt.setFont(new java.awt.Font("Segoe UI", 0, 13)); // NOI18N
-
         ageTxt.setFont(new java.awt.Font("Segoe UI", 0, 13)); // NOI18N
         ageTxt.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyTyped(java.awt.event.KeyEvent evt) {
@@ -181,6 +180,10 @@ public class EditStaff extends javax.swing.JFrame {
         idTxt.setFont(new java.awt.Font("Segoe UI", 1, 13)); // NOI18N
         idTxt.setText("S001");
 
+        newPwdTxt.setFont(new java.awt.Font("Tahoma", 0, 13)); // NOI18N
+
+        confirmPwdTxt.setFont(new java.awt.Font("Tahoma", 0, 13)); // NOI18N
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
@@ -190,7 +193,7 @@ public class EditStaff extends javax.swing.JFrame {
                 .addGap(19, 19, 19)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                         .addGroup(jPanel2Layout.createSequentialGroup()
                             .addComponent(cancelBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 103, Short.MAX_VALUE)
@@ -255,7 +258,7 @@ public class EditStaff extends javax.swing.JFrame {
                     .addComponent(positionTxt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(34, 34, 34)
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(27, 27, 27)
+                .addGap(31, 31, 31)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel7)
                     .addComponent(newPwdTxt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -263,11 +266,11 @@ public class EditStaff extends javax.swing.JFrame {
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel8)
                     .addComponent(confirmPwdTxt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(41, 41, 41)
+                .addGap(29, 29, 29)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(cancelBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(editBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(41, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -297,8 +300,10 @@ public class EditStaff extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(rootPane, "Kindly fill up the detials.", "Empty Fields", JOptionPane.WARNING_MESSAGE);
         }else if (pwd.trim().equals("") && !confirmPwd.isEmpty()) {
             JOptionPane.showMessageDialog(rootPane, "Kindly fill up the password.", "Empty Fields", JOptionPane.WARNING_MESSAGE);
-        } else if (confirmPwd.trim().equals("") && !pwd.isEmpty()) {
+        }else if (confirmPwd.trim().equals("") && !pwd.isEmpty()) {
             JOptionPane.showMessageDialog(rootPane, "Kindly fill up the confirm password.", "Empty Fields", JOptionPane.WARNING_MESSAGE);
+        }else if(!pwd.isEmpty() && !confirmPwd.isEmpty() && newPwdTxt.getPassword().length < 8){
+            JOptionPane.showMessageDialog(null, "Password Minimum 8 Characters.", "ERROR", JOptionPane.ERROR_MESSAGE);
         }else if (!pwd.equals(confirmPwd)) {
             JOptionPane.showMessageDialog(null, "New Password and Confirm Password Not Matched.", "ERROR", JOptionPane.ERROR_MESSAGE);
         }else if(Integer.valueOf(age) < 18){
@@ -393,7 +398,7 @@ public class EditStaff extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTextField ageTxt;
     private javax.swing.JButton cancelBtn;
-    private javax.swing.JTextField confirmPwdTxt;
+    private javax.swing.JPasswordField confirmPwdTxt;
     private javax.swing.JButton editBtn;
     private javax.swing.JComboBox<String> genderTxt;
     private javax.swing.JLabel idTxt;
@@ -410,7 +415,7 @@ public class EditStaff extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JTextField nameTxt;
-    private javax.swing.JTextField newPwdTxt;
+    private javax.swing.JPasswordField newPwdTxt;
     private javax.swing.JComboBox<String> positionTxt;
     // End of variables declaration//GEN-END:variables
 }

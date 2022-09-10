@@ -26,6 +26,8 @@ public class AddStaff extends javax.swing.JFrame {
     
     public AddStaff() {
         initComponents();
+        pwdTxt.setEchoChar((char) 8226);
+        confirmPwdTxt.setEchoChar((char) 8226);
     }
 
 
@@ -52,10 +54,10 @@ public class AddStaff extends javax.swing.JFrame {
         nameTxt = new javax.swing.JTextField();
         genderTxt = new javax.swing.JComboBox<>();
         positionTxt = new javax.swing.JComboBox<>();
-        pwdTxt = new javax.swing.JTextField();
-        confirmPwdTxt = new javax.swing.JTextField();
         ageTxt = new javax.swing.JTextField();
         clearBtn = new javax.swing.JButton();
+        pwdTxt = new javax.swing.JPasswordField();
+        confirmPwdTxt = new javax.swing.JPasswordField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -131,10 +133,6 @@ public class AddStaff extends javax.swing.JFrame {
         positionTxt.setFont(new java.awt.Font("Segoe UI", 0, 13)); // NOI18N
         positionTxt.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Manager", "Staff" }));
 
-        pwdTxt.setFont(new java.awt.Font("Segoe UI", 0, 13)); // NOI18N
-
-        confirmPwdTxt.setFont(new java.awt.Font("Segoe UI", 0, 13)); // NOI18N
-
         ageTxt.setFont(new java.awt.Font("Segoe UI", 0, 13)); // NOI18N
         ageTxt.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyTyped(java.awt.event.KeyEvent evt) {
@@ -152,6 +150,10 @@ public class AddStaff extends javax.swing.JFrame {
             }
         });
 
+        pwdTxt.setFont(new java.awt.Font("Segoe UI", 0, 13)); // NOI18N
+
+        confirmPwdTxt.setFont(new java.awt.Font("Segoe UI", 0, 13)); // NOI18N
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
@@ -162,12 +164,12 @@ public class AddStaff extends javax.swing.JFrame {
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addComponent(cancelBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 103, Short.MAX_VALUE)
                         .addComponent(addBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
                         .addComponent(jLabel8)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(confirmPwdTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(18, 18, 18)
+                        .addComponent(confirmPwdTxt))
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addGap(19, 19, 19)
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -177,10 +179,6 @@ public class AddStaff extends javax.swing.JFrame {
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(nameTxt)
                             .addComponent(ageTxt)))
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addComponent(jLabel7)
-                        .addGap(18, 18, 18)
-                        .addComponent(pwdTxt))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
                         .addGap(6, 6, 6)
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
@@ -190,7 +188,11 @@ public class AddStaff extends javax.swing.JFrame {
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(genderTxt, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(positionTxt, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                    .addComponent(clearBtn, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(clearBtn, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addComponent(jLabel7)
+                        .addGap(18, 18, 18)
+                        .addComponent(pwdTxt)))
                 .addContainerGap(21, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
@@ -221,7 +223,7 @@ public class AddStaff extends javax.swing.JFrame {
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel8)
                     .addComponent(confirmPwdTxt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(26, 26, 26)
+                .addGap(27, 27, 27)
                 .addComponent(clearBtn)
                 .addGap(57, 57, 57)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -238,7 +240,7 @@ public class AddStaff extends javax.swing.JFrame {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, 519, Short.MAX_VALUE)
+            .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, 520, Short.MAX_VALUE)
         );
 
         pack();
@@ -263,6 +265,8 @@ public class AddStaff extends javax.swing.JFrame {
         
         if(name.trim().equals("") || age.trim().equals("") || pwd.trim().equals("") || confirmPwd.trim().equals("")){
             JOptionPane.showMessageDialog(rootPane, "Kindly fill up the detials.", "Empty Fields", JOptionPane.WARNING_MESSAGE);
+        }else if(pwdTxt.getPassword().length < 8){
+            JOptionPane.showMessageDialog(null, "Password Minimum 8 Characters.", "ERROR", JOptionPane.ERROR_MESSAGE);
         }else if(!pwd.equals(confirmPwd)){
             JOptionPane.showMessageDialog(null, "Password and Confirm Password Not Matched.", "ERROR", JOptionPane.ERROR_MESSAGE);
         }else if(Integer.valueOf(age) < 18){
@@ -344,7 +348,7 @@ public class AddStaff extends javax.swing.JFrame {
     private javax.swing.JTextField ageTxt;
     private javax.swing.JButton cancelBtn;
     private javax.swing.JButton clearBtn;
-    private javax.swing.JTextField confirmPwdTxt;
+    private javax.swing.JPasswordField confirmPwdTxt;
     private javax.swing.JComboBox<String> genderTxt;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel3;
@@ -357,6 +361,6 @@ public class AddStaff extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel3;
     private javax.swing.JTextField nameTxt;
     private javax.swing.JComboBox<String> positionTxt;
-    private javax.swing.JTextField pwdTxt;
+    private javax.swing.JPasswordField pwdTxt;
     // End of variables declaration//GEN-END:variables
 }
