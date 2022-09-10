@@ -5,8 +5,19 @@
  */
 package swing;
 
+import com.mysql.cj.jdbc.result.ResultSetMetaData;
 import java.awt.Color;
+import java.awt.Font;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.util.Vector;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.plaf.basic.BasicInternalFrameUI;
+import javax.swing.table.DefaultTableCellRenderer;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
@@ -14,15 +25,58 @@ import javax.swing.plaf.basic.BasicInternalFrameUI;
  */
 public class StaffPage extends javax.swing.JInternalFrame {
 
-    /**
-     * Creates new form StaffPage
-     */
+    private static final String username = "myuser";
+    private static final String password = "angel123";
+    private static final String dataConn = "jdbc:mysql://localhost:3306/orderingdb?allowPublicKeyRetrieval=true&useSSL=false&serverTimezone=UTC";
+
+    Connection sqlConn = null;
+    PreparedStatement pst = null;
+    ResultSet rs = null;
+    int q, i, id, deleteItem;
+
     public StaffPage() {
         initComponents();
         this.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 0, 0, 0));
-        BasicInternalFrameUI ui = (BasicInternalFrameUI)this.getUI();
+        BasicInternalFrameUI ui = (BasicInternalFrameUI) this.getUI();
         ui.setNorthPane(null);
-        getContentPane().setBackground(new Color(221,203,255));
+        getContentPane().setBackground(new Color(221, 203, 255));
+        staffTable.getTableHeader().setFont(new Font("Segoe UI", Font.BOLD, 13));
+        DefaultTableCellRenderer leftRenderer = new DefaultTableCellRenderer();
+        leftRenderer.setHorizontalAlignment(JLabel.LEFT);
+        staffTable.setDefaultRenderer(Integer.class, leftRenderer);
+        upDateDB();
+
+    }
+
+    public void upDateDB() {
+        try {
+            Class.forName("com.mysql.jdbc.Driver");
+            sqlConn = DriverManager.getConnection(dataConn, username, password);
+            pst = sqlConn.prepareStatement("Select * from staff");
+            rs = pst.executeQuery();
+            ResultSetMetaData stData = (ResultSetMetaData) rs.getMetaData();
+
+            q = stData.getColumnCount();
+
+            DefaultTableModel RecordTable = (DefaultTableModel) staffTable.getModel();
+            RecordTable.setRowCount(0);
+
+            while (rs.next()) {
+                Vector columnData = new Vector();
+
+                for (i = 1; i <= q; i++) {
+                    columnData.add("S" + rs.getString("id"));
+                    columnData.add(rs.getString("name"));
+                    columnData.add(rs.getString("age"));
+                    columnData.add(rs.getString("gender"));
+                    columnData.add(rs.getString("position"));
+                }
+                RecordTable.addRow(columnData);
+            }
+
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, e);
+        }
     }
 
     /**
@@ -34,34 +88,250 @@ public class StaffPage extends javax.swing.JInternalFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        searchTxt = new javax.swing.JTextField();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        staffTable = new javax.swing.JTable();
+        dltButton = new javax.swing.JButton();
+        editStaffBtn = new javax.swing.JButton();
+        addStaffBtn = new javax.swing.JButton();
+        refreshBtn = new javax.swing.JButton();
+        chooseItem = new javax.swing.JComboBox<>();
         jLabel1 = new javax.swing.JLabel();
+        searchBtn = new javax.swing.JButton();
 
-        setBackground(new java.awt.Color(255, 255, 255));
+        setBackground(new java.awt.Color(204, 204, 255));
 
-        jLabel1.setText("Staff");
+        searchTxt.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        searchTxt.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
+
+        staffTable.setFont(new java.awt.Font("Segoe UI", 0, 13)); // NOI18N
+        staffTable.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                { new Integer(1), "Angel",  new Integer(34), "F", "Manager"},
+                { new Integer(2), "Annie",  new Integer(54), "M", "Staff"},
+                { new Integer(3), "Jessica",  new Integer(23), "F", "Manager"},
+                { new Integer(4), "Ken",  new Integer(54), "F", null}
+            },
+            new String [] {
+                "Staff ID", "Staff Name", "Staff Age", "Staff Gender", "Staff Position"
+            }
+        ) {
+            Class[] types = new Class [] {
+                java.lang.Integer.class, java.lang.String.class, java.lang.Integer.class, java.lang.String.class, java.lang.String.class
+            };
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        staffTable.setGridColor(new java.awt.Color(255, 255, 255));
+        staffTable.setRowHeight(25);
+        staffTable.setSelectionBackground(new java.awt.Color(56, 0, 107));
+        staffTable.setShowGrid(false);
+        jScrollPane1.setViewportView(staffTable);
+
+        dltButton.setBackground(new java.awt.Color(255, 0, 51));
+        dltButton.setFont(new java.awt.Font("Segoe UI", 0, 13)); // NOI18N
+        dltButton.setForeground(new java.awt.Color(255, 255, 255));
+        dltButton.setText("Delete");
+        dltButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                dltButtonActionPerformed(evt);
+            }
+        });
+
+        editStaffBtn.setBackground(new java.awt.Color(56, 0, 107));
+        editStaffBtn.setFont(new java.awt.Font("Segoe UI", 0, 13)); // NOI18N
+        editStaffBtn.setForeground(new java.awt.Color(255, 255, 255));
+        editStaffBtn.setText("Edit staff ");
+        editStaffBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                editStaffBtnActionPerformed(evt);
+            }
+        });
+
+        addStaffBtn.setBackground(new java.awt.Color(56, 0, 107));
+        addStaffBtn.setFont(new java.awt.Font("Segoe UI", 0, 13)); // NOI18N
+        addStaffBtn.setForeground(new java.awt.Color(255, 255, 255));
+        addStaffBtn.setText("Add staff");
+        addStaffBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                addStaffBtnActionPerformed(evt);
+            }
+        });
+
+        refreshBtn.setBackground(new java.awt.Color(56, 0, 107));
+        refreshBtn.setFont(new java.awt.Font("Segoe UI", 0, 13)); // NOI18N
+        refreshBtn.setForeground(new java.awt.Color(255, 255, 255));
+        refreshBtn.setText("Refresh");
+        refreshBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                refreshBtnActionPerformed(evt);
+            }
+        });
+
+        chooseItem.setFont(new java.awt.Font("Segoe UI", 0, 13)); // NOI18N
+        chooseItem.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Staff ID", "Staff Name", "Staff Age", "Staff Gender", "Staff Position" }));
+
+        jLabel1.setFont(new java.awt.Font("Segoe UI", 0, 13)); // NOI18N
+        jLabel1.setText("Search By :");
+
+        searchBtn.setBackground(new java.awt.Color(56, 0, 107));
+        searchBtn.setFont(new java.awt.Font("Segoe UI", 0, 13)); // NOI18N
+        searchBtn.setForeground(new java.awt.Color(255, 255, 255));
+        searchBtn.setText("Search");
+        searchBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                searchBtnActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(336, 336, 336)
-                .addComponent(jLabel1)
-                .addContainerGap(470, Short.MAX_VALUE))
+                .addGap(30, 30, 30)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(addStaffBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 135, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(51, 51, 51)
+                        .addComponent(editStaffBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 135, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(369, 369, 369)
+                        .addComponent(dltButton, javax.swing.GroupLayout.PREFERRED_SIZE, 92, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 782, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jLabel1)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(chooseItem, javax.swing.GroupLayout.PREFERRED_SIZE, 143, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(searchTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 235, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(searchBtn)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(refreshBtn)))
+                .addContainerGap(26, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(179, 179, 179)
-                .addComponent(jLabel1)
-                .addContainerGap(299, Short.MAX_VALUE))
+                .addGap(26, 26, 26)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(searchTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(refreshBtn)
+                    .addComponent(chooseItem, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel1)
+                    .addComponent(searchBtn))
+                .addGap(18, 18, 18)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 370, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(addStaffBtn)
+                    .addComponent(editStaffBtn)
+                    .addComponent(dltButton))
+                .addContainerGap(15, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void addStaffBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addStaffBtnActionPerformed
+        AddStaff addStaffForm = new AddStaff();
+        addStaffForm.setVisible(true);
+    }//GEN-LAST:event_addStaffBtnActionPerformed
+
+    private void refreshBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_refreshBtnActionPerformed
+        upDateDB();
+    }//GEN-LAST:event_refreshBtnActionPerformed
+
+    private void dltButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_dltButtonActionPerformed
+        DefaultTableModel RecordTable = (DefaultTableModel) staffTable.getModel();
+        int SelectedRows = staffTable.getSelectedRow();
+
+        if (staffTable.getSelectionModel().isSelectionEmpty()) {
+            JOptionPane.showMessageDialog(rootPane, "Kindly select a record to delete.", "Error", JOptionPane.WARNING_MESSAGE);
+        } else {
+            try {
+                id = Integer.parseInt(RecordTable.getValueAt(SelectedRows, 0).toString().substring(1));
+                deleteItem = JOptionPane.showConfirmDialog(null, "Do you confirm to delete the record ?", "Delete process",
+                        JOptionPane.OK_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE);
+                if (deleteItem == JOptionPane.YES_OPTION) {
+                    Class.forName("com.mysql.jdbc.Driver");
+                    sqlConn = DriverManager.getConnection(dataConn, username, password);
+                    pst = sqlConn.prepareStatement("delete from staff where id=?");
+                    pst.setInt(1, id);
+                    pst.executeUpdate();
+                    JOptionPane.showMessageDialog(this, "Staff Record Deleted Successfully");
+                    upDateDB();
+                }
+            } catch (Exception e) {
+                JOptionPane.showMessageDialog(null, e);
+            }
+        }
+
+    }//GEN-LAST:event_dltButtonActionPerformed
+
+    private void editStaffBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editStaffBtnActionPerformed
+        if (staffTable.getSelectionModel().isSelectionEmpty()) {
+            JOptionPane.showMessageDialog(rootPane, "Kindly select a record to edit.", "Error", JOptionPane.WARNING_MESSAGE);
+        } else {
+            EditStaff editStaffForm = new EditStaff(this);
+            editStaffForm.setVisible(true);
+        }
+    }//GEN-LAST:event_editStaffBtnActionPerformed
+
+    private void searchBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchBtnActionPerformed
+        String search = searchTxt.getText();
+        String choose = chooseItem.getSelectedItem().toString();
+
+        switch (choose) {
+            case "Staff ID":
+                break;
+            case "Staff Name":
+                break;
+            case "Staff Age":
+                break;
+            case "Staff Gender":
+                break;
+            case "Staff Position":
+                break;
+            default:
+                break;
+        }
+    }//GEN-LAST:event_searchBtnActionPerformed
+
+    public String[] selectedStaff() {
+        DefaultTableModel RecordTable = (DefaultTableModel) staffTable.getModel();
+        int SelectedRows = staffTable.getSelectedRow();
+
+        String[] staff = new String[5];
+        staff[0] = RecordTable.getValueAt(SelectedRows, 0).toString().substring(1);
+        staff[1] = RecordTable.getValueAt(SelectedRows, 1).toString();
+        staff[2] = RecordTable.getValueAt(SelectedRows, 2).toString();
+        staff[3] = RecordTable.getValueAt(SelectedRows, 3).toString();
+        staff[4] = RecordTable.getValueAt(SelectedRows, 4).toString();
+
+        return staff;
+    }
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton addStaffBtn;
+    private javax.swing.JComboBox<String> chooseItem;
+    private javax.swing.JButton dltButton;
+    private javax.swing.JButton editStaffBtn;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JButton refreshBtn;
+    private javax.swing.JButton searchBtn;
+    private javax.swing.JTextField searchTxt;
+    private javax.swing.JTable staffTable;
     // End of variables declaration//GEN-END:variables
 }

@@ -13,9 +13,10 @@ import java.sql.*;
  */
 public class Login extends javax.swing.JFrame {
 
-    /**
-     * Creates new form Login
-     */
+    private static final String username = "myuser";
+    private static final String password = "angel123";
+    private static final String dataConn = "jdbc:mysql://localhost:3306/orderingdb?allowPublicKeyRetrieval=true&useSSL=false&serverTimezone=UTC";
+    
     public Login() {
         initComponents();
     }
@@ -152,9 +153,7 @@ public class Login extends javax.swing.JFrame {
     private void loginBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loginBtnActionPerformed
         try{
             Class.forName("com.mysql.jdbc.Driver");
-            Connection conn = DriverManager.getConnection(
-               "jdbc:mysql://localhost:3306/orderingdb?allowPublicKeyRetrieval=true&useSSL=false&serverTimezone=UTC",
-               "root", "angel123");
+            Connection conn = DriverManager.getConnection(dataConn,username, password);
             String sql = "Select * from staff where id=? and password=?";
             PreparedStatement pst = conn.prepareStatement(sql);
             pst.setString(1, idTxt.getText());
